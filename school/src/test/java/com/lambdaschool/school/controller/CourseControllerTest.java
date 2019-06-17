@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -82,6 +83,7 @@ public class CourseControllerTest
         courseList.add(c2);
         courseList.add(c3);
         courseList.add(c4);
+
     }
 
     @After
@@ -92,6 +94,7 @@ public class CourseControllerTest
     @Test
     public void listAllCourses()
     {
+        assertEquals(4, courseList.size());
     }
 
     @Test
