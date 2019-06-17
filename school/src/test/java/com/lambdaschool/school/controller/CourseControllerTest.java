@@ -19,11 +19,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = CourseController.class)
@@ -132,16 +135,36 @@ public class CourseControllerTest
     {
         String apiUrl = "/courses/course/add";
 
-        Mockito.when(courseService.save(courseList.get(1))).thenReturn(courseList.get(1));
+//        1. Build a course
+        Instructor i1 = new Instructor("Sally");
+        i1.setInstructid(1);
 
-        RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl).accept(MediaType.APPLICATION_JSON);
-        MvcResult r = mockMvc.perform(rb).andReturn();
+        Student s1 = new Student("John");
+        Student s2 = new Student("Julian");
+        Student s3 = new Student("Mary");
 
-        String tr = r.getResponse().getContentAsString();
+        s1.setStudid(1);
+        s2.setStudid(2);
+        s3.setStudid(3);
+
+        List<Student> students = new ArrayList<>();
+        students.add(s1);
+        students.add(s2);
+        students.add(s3);
+
+        Course c1 = new Course("Data Science");
+        c1.setCourseid(1);
+        c1.setInstructor(i1);
+        c1.setStudents(students);
 
         ObjectMapper mapper = new ObjectMapper();
-        String er = mapper.writeValueAsString(courseList.get(1));
+        String courseString = mapper.writeValueAsString(c1);
 
-        assertEquals(er, tr);
+        Mockito.when(courseService.save(any(Course.class))).thenReturn(c1);
+
+        RequestBuilder rb = MockMvcRequestBuilders.post(apiUrl)
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .content(courseString);
+        mockMvc.perform(rb).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 }
