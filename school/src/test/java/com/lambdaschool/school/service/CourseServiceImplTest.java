@@ -45,6 +45,8 @@ public class CourseServiceImplTest
     @Test
     public void delete()
     {
+        courseService.delete(6);
+        assertEquals(5, courseService.findAll().size());
     }
 
     @Test
