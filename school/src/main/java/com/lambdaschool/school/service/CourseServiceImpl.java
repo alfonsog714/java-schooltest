@@ -63,7 +63,7 @@ public class CourseServiceImpl implements CourseService
         {
             newCourse.getStudents().add(new Student(s.getStudname()));
         }
-        
+
         return courserepos.save(newCourse);
     }
 }
