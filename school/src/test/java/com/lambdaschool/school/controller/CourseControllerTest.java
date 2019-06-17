@@ -127,6 +127,6 @@ public class CourseControllerTest
         ObjectMapper mapper = new ObjectMapper();
         String er = mapper.writeValueAsString(courseList.get(1));
 
-        assertEquals("Return List", er, tr);
+        assertEquals(er, tr);
     }
 }
