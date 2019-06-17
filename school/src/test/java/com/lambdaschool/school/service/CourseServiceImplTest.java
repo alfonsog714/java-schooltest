@@ -50,5 +50,6 @@ public class CourseServiceImplTest
     @Test
     public void findCourseById()
     {
+        assertEquals("JavaScript", courseService.findCourseById(2).getCoursename());
     }
 }
