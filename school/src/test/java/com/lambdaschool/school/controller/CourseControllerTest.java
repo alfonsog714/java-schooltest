@@ -97,9 +97,24 @@ public class CourseControllerTest
     }
 
     @Test
-    public void listAllCourses()
+    public void listAllCourses() throws Exception
     {
-        assertEquals(4, courseList.size());
+//        assertEquals(4, courseList.size());
+        String apiUrl = "/courses/courses";
+
+        Mockito.when(courseService.findAll()).thenReturn((ArrayList<Course>) courseList);
+
+        RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl).accept(MediaType.APPLICATION_JSON);
+
+        MvcResult r = mockMvc.perform(rb).andReturn();
+
+        String tr = r.getResponse().getContentAsString();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String er = mapper.writeValueAsString(courseList);
+
+        assertEquals("Return List", er, tr);
     }
 
     @Test
