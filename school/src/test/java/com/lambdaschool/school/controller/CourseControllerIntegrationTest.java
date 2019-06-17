@@ -55,4 +55,10 @@ public class CourseControllerIntegrationTest
     public void deleteCourseById()
     {
     }
+
+//    /courses/course/add
+    @Test
+    public void addNewCourseResponseTime(){
+        given().when().get("/courses/course/add").then().time(lessThan(5000L));
+    }
 }

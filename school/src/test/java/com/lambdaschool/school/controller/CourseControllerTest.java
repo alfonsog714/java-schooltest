@@ -1,5 +1,6 @@
 package com.lambdaschool.school.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lambdaschool.school.model.Course;
 import com.lambdaschool.school.model.Instructor;
 import com.lambdaschool.school.model.Student;
@@ -12,8 +13,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,5 +110,23 @@ public class CourseControllerTest
     @Test
     public void deleteCourseById()
     {
+    }
+
+    @Test
+    public void addNewCourse() throws Exception
+    {
+        String apiUrl = "/courses/course/add";
+
+        Mockito.when(courseService.save(courseList.get(1))).thenReturn(courseList.get(1));
+
+        RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl).accept(MediaType.APPLICATION_JSON);
+        MvcResult r = mockMvc.perform(rb).andReturn();
+
+        String tr = r.getResponse().getContentAsString();
+
+        ObjectMapper mapper = new ObjectMapper();
+        String er = mapper.writeValueAsString(courseList.get(1));
+
+        assertEquals("Return List", er, tr);
     }
 }
