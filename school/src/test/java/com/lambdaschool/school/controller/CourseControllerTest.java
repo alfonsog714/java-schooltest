@@ -133,7 +133,7 @@ public class CourseControllerTest
     @Test
     public void addNewCourse() throws Exception
     {
-        String apiUrl = "/courses/course/add";
+        String apiUrl = "/courses/courses/course/add";
 
 //        1. Build a course
         Instructor i1 = new Instructor("Sally");
@@ -165,6 +165,6 @@ public class CourseControllerTest
         RequestBuilder rb = MockMvcRequestBuilders.post(apiUrl)
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
                 .content(courseString);
-        mockMvc.perform(rb).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(rb).andExpect(status().isCreated()).andDo(MockMvcResultHandlers.print());
     }
 }
